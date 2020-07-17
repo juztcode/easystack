@@ -22,6 +22,8 @@ import com.amazonaws.services.dynamodbv2.model.ReturnConsumedCapacity;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 import com.amazonaws.services.dynamodbv2.model.TransactWriteItem;
 import com.amazonaws.services.dynamodbv2.model.TransactWriteItemsRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DynamoDbService implements DbService {
+
+    private final static Logger logger = LoggerFactory.getLogger(DynamoDbService.class);
 
     private final AmazonDynamoDB db;
     private final Table table;
@@ -88,7 +92,7 @@ public class DynamoDbService implements DbService {
         try {
             db.createTable(request);
         } catch (ResourceInUseException e) {
-            System.out.println("table already available");
+            logger.warn("table already available");
         }
     }
 

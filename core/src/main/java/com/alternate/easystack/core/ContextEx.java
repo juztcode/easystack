@@ -1,16 +1,21 @@
 package com.alternate.easystack.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ContextEx extends Context {
-    public ContextEx(DbService dbService) {
-        super(dbService);
+    private static final Logger logger = LoggerFactory.getLogger(ContextEx.class);
+
+    public ContextEx(DbService dbService, Logger contextLogger) {
+        super(dbService, contextLogger);
     }
 
     public void commitTx() {
         if (!transaction.values().isEmpty()) {
-            System.out.println("Commit context transaction: " + transaction);
+            logger.info("Commit context transaction: " + transaction);
             dbService.save(transaction.values());
         } else {
-            System.out.println("Transaction is empty");
+            logger.info("Transaction is empty");
         }
     }
 }

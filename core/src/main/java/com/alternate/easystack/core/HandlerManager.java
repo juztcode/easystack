@@ -1,6 +1,8 @@
 package com.alternate.easystack.core;
 
 import com.alternate.easystack.common.utils.GSONCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import static com.alternate.easystack.common.exception.UnhandledExceptionHandler
 public class HandlerManager {
     private final DbService dbService;
     private final Map<String, HandlerWrapper> handlersMap = new HashMap<>();
+    private final Map<Class, Logger> loggerMap = new HashMap<>();
 
     public HandlerManager(DbService dbService) {
         this.dbService = dbService;
@@ -32,10 +35,13 @@ public class HandlerManager {
 
     @SuppressWarnings("unchecked")
     public <T extends Response> T invoke(String path, Request request) {
-        ContextEx contextEx = new ContextEx(dbService);
+        HandlerWrapper wrapper = handlersMap.get(path);
+
+        Logger logger = loggerMap.computeIfAbsent(wrapper.getHandler().getClass(), LoggerFactory::getLogger);
+        ContextEx contextEx = new ContextEx(dbService, logger);
 
         try {
-            T response = (T) handlersMap.get(path).getHandler().apply(contextEx, request);
+            T response = (T) wrapper.getHandler().apply(contextEx, request);
             contextEx.commitTx();
             return response;
         } catch (Throwable e) {

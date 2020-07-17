@@ -2,7 +2,6 @@ package com.alternate.easystack.example;
 
 import com.alternate.easystack.core.Context;
 import com.alternate.easystack.core.Handler;
-import com.alternate.easystack.core.HandlerException;
 
 import java.util.Optional;
 
@@ -16,7 +15,8 @@ public class CreateUser implements Handler<CreateUserRequest, GenericResponse> {
             context.save(request.getId(), new User(request.getId(), request.getName()));
             return new GenericResponse(true, "user created successfully");
         } else {
-            throw new HandlerException("user already exist for id: " + request.getId());
+            context.logger().error("user already exist for id: " + request.getId());
+            return new GenericResponse(false, "user already exist for id: " + request.getId());
         }
     }
 }
