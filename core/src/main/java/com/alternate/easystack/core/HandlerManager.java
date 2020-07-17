@@ -39,7 +39,7 @@ public class HandlerManager {
             contextEx.commitTx();
             return response;
         } catch (Throwable e) {
-            throw new HandlerException(e);
+            throw (e instanceof HandlerException) ? (HandlerException) e : new HandlerException(e);
         }
     }
 
