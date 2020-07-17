@@ -1,12 +1,11 @@
 package com.alternate.easystack.example;
 
-import com.alternate.easystack.core.Request;
+public class User {
 
-public class TestRequest implements Request {
     private final String id;
     private final String name;
 
-    public TestRequest(String id, String name) {
+    public User(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -21,7 +20,7 @@ public class TestRequest implements Request {
 
     @Override
     public String toString() {
-        return "TestRequest{" +
+        return "User{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';

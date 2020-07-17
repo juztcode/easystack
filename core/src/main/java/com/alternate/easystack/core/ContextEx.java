@@ -6,7 +6,11 @@ public class ContextEx extends Context {
     }
 
     public void commitTx() {
-        System.out.println("Commit context transaction: " + transaction);
-        dbService.save(transaction.values());
+        if (!transaction.values().isEmpty()) {
+            System.out.println("Commit context transaction: " + transaction);
+            dbService.save(transaction.values());
+        } else {
+            System.out.println("Transaction is empty");
+        }
     }
 }

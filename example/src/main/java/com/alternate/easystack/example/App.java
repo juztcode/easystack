@@ -14,7 +14,7 @@ public class App {
         DbService dbService = new DynamoDbService("test");
         HandlerManager handlerManager = new HandlerManager(dbService);
 
-        handlerManager.register("/test", TestHandler.class);
+        handlerManager.register("/create-user", CreateUser.class);
 
         WebApi webApi = new RapidoidWebApi("0.0.0.0", 8080);
         webApi.start(handlerManager);
