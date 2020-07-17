@@ -1,12 +1,10 @@
 package com.alternate.easystack.core;
 
-import com.alternate.easystack.services.DbService;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.alternate.easystack.exception.UnhandledExceptionHandler.unhandled;
+import static com.alternate.easystack.common.exception.UnhandledExceptionHandler.unhandled;
 
 public class HandlerManager {
     private final DbService dbService;

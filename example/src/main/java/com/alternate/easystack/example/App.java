@@ -1,8 +1,8 @@
 package com.alternate.easystack.example;
 
+import com.alternate.easystack.core.DbService;
+import com.alternate.easystack.core.DynamoDbService;
 import com.alternate.easystack.core.HandlerManager;
-import com.alternate.easystack.services.DbService;
-import com.alternate.easystack.services.DynamoDbService;
 
 public class App {
 

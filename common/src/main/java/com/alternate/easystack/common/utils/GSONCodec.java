@@ -1,12 +1,12 @@
-package com.alternate.easystack.utils;
+package com.alternate.easystack.common.utils;
 
-import com.alternate.easystack.concurrent.ThreadLocalWithDefault;
+import com.alternate.easystack.common.concurrent.ThreadLocalWithDefault;
 import com.google.gson.Gson;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.alternate.easystack.exception.UnhandledExceptionHandler.unhandled;
+import static com.alternate.easystack.common.exception.UnhandledExceptionHandler.unhandled;
 
 public class GSONCodec {
 

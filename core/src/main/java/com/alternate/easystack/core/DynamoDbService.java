@@ -1,6 +1,6 @@
-package com.alternate.easystack.services;
+package com.alternate.easystack.core;
 
-import com.alternate.easystack.utils.GSONCodec;
+import com.alternate.easystack.common.utils.GSONCodec;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;

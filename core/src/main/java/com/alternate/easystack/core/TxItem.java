@@ -1,4 +1,4 @@
-package com.alternate.easystack.services;
+package com.alternate.easystack.core;
 
 public class TxItem {
     private final String key;

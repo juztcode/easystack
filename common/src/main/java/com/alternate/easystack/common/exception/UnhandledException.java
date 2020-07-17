@@ -1,4 +1,4 @@
-package com.alternate.easystack.exception;
+package com.alternate.easystack.common.exception;
 
 public class UnhandledException extends RuntimeException {
     public UnhandledException(Throwable cause) {

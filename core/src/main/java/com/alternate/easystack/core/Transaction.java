@@ -1,4 +1,4 @@
-package com.alternate.easystack.services;
+package com.alternate.easystack.core;
 
 import java.util.Collection;
 import java.util.HashMap;

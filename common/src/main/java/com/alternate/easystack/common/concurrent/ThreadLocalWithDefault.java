@@ -1,4 +1,4 @@
-package com.alternate.easystack.concurrent;
+package com.alternate.easystack.common.concurrent;
 
 import java.util.function.Supplier;
 
