@@ -6,10 +6,7 @@ import java.util.Optional;
 
 public class Context {
     private final DbService dbService;
-
-    private final Map<String, Object> cache = new HashMap<>();
-    private final Map<String, Long> dbVersion = new HashMap<>();
-
+    private final Map<String, TxItem> cache = new HashMap<>();
     private Transaction transaction = null;
 
     public Context(DbService dbService) {
@@ -18,30 +15,25 @@ public class Context {
 
     @SuppressWarnings("unchecked")
     public <T> Optional<T> get(String key) {
-        T t = null;
+        TxItem txItem = null;
 
         if (transaction != null) {
-            TxItem txItem = transaction.getTxItem(key);
+            txItem = transaction.getTxItem(key);
+        }
+
+        if (txItem == null) {
+            txItem = cache.get(key);
+        }
+
+        if (txItem == null) {
+            txItem = dbService.get(key);
 
             if (txItem != null) {
-                t = (T) txItem.getPayload();
+                cache.put(key, txItem);
             }
         }
 
-        if (t == null) {
-            t = (T) cache.get(key);
-        }
-
-        if (t == null) {
-            TxItem txItem = dbService.get(key);
-
-            if (txItem != null) {
-                t = (T) txItem.getPayload();
-                cache.put(key, t);
-                dbVersion.put(key, txItem.getVersion());
-            }
-        }
-
+        T t = (txItem != null) ? (T) txItem.getPayload() : null;
         return Optional.ofNullable(t);
     }
 
@@ -54,7 +46,7 @@ public class Context {
     }
 
     public void save(String key, Object item) {
-        TxItem txItem = new TxItem(key, item, getDbVersion(key) + 1);
+        TxItem txItem = new TxItem(key, item, getVersion(key) + 1);
 
         if (transaction != null) {
             transaction.addToTx(txItem);
@@ -62,8 +54,7 @@ public class Context {
             dbService.save(txItem);
 
             System.out.println("TxItem committed: " + txItem);
-            cache.put(key, txItem.getPayload());
-            dbVersion.put(key, txItem.getVersion());
+            cache.put(key, txItem);
         }
     }
 
@@ -72,8 +63,7 @@ public class Context {
         transaction.getTxItems().forEach(i -> {
 
             System.out.println("TxItem committed: " + i);
-            cache.put(i.getKey(), i.getPayload());
-            dbVersion.put(i.getKey(), i.getVersion());
+            cache.put(i.getKey(), i);
         });
 
         transaction = null;
@@ -83,17 +73,13 @@ public class Context {
         transaction = null;
     }
 
-    private long getDbVersion(String key) {
-        long version = dbVersion.getOrDefault(key, 0L);
+    private long getVersion(String key) {
+        TxItem txItem = cache.get(key);
 
-        if (version == 0L) {
-            TxItem txItem = dbService.get(key);
-
-            if (txItem != null) {
-                version = txItem.getVersion();
-            }
+        if (txItem == null) {
+            txItem = dbService.get(key);
         }
 
-        return version;
+        return txItem != null ? txItem.getVersion() : 0L;
     }
 }
