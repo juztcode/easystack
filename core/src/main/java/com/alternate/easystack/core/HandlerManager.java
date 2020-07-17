@@ -43,7 +43,6 @@ public class HandlerManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public String invokeJson(String path, String request) {
         HandlerWrapper wrapper = handlersMap.get(path);
         Request requestObj = GSONCodec.decode(wrapper.getRequestType(), request);

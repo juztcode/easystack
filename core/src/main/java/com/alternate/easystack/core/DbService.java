@@ -1,10 +1,12 @@
 package com.alternate.easystack.core;
 
+import java.util.Collection;
+
 public interface DbService {
 
     TxItem get(String key);
 
-    void save(Transaction transaction);
+    void save(Collection<TxItem> txItems);
 
-    void save(TxItem item);
+    void save(TxItem txItem);
 }

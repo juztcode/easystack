@@ -59,14 +59,14 @@ public class DynamoDbService implements DbService {
     }
 
     @Override
-    public void save(Transaction transaction) {
-        TransactWriteItemsRequest txRequest = createTxWriteItemRequest(table.getTableName(), transaction.getTxItems());
+    public void save(Collection<TxItem> txItems) {
+        TransactWriteItemsRequest txRequest = createTxWriteItemRequest(table.getTableName(), txItems);
         db.transactWriteItems(txRequest);
     }
 
     @Override
-    public void save(TxItem item) {
-        PutItemSpec putItemSpec = createPutItemSpec(item);
+    public void save(TxItem txItem) {
+        PutItemSpec putItemSpec = createPutItemSpec(txItem);
         table.putItem(putItemSpec);
     }
 
