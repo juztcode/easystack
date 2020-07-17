@@ -32,13 +32,22 @@ public class HandlerManager {
 
     @SuppressWarnings("unchecked")
     public <T extends Response> T invoke(String path, Request request) {
-        return (T) handlersMap.get(path).getHandler().apply(new Context(dbService), request);
+        ContextEx contextEx = new ContextEx(dbService);
+
+        try {
+            T response = (T) handlersMap.get(path).getHandler().apply(contextEx, request);
+            contextEx.commitTx();
+            return response;
+        } catch (Throwable e) {
+            throw new HandlerException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")
     public String invokeJson(String path, String request) {
         HandlerWrapper wrapper = handlersMap.get(path);
-        Response responseObj = (Response) wrapper.getHandler().apply(new Context(dbService), GSONCodec.decode(wrapper.getRequestType(), request));
+        Request requestObj = GSONCodec.decode(wrapper.getRequestType(), request);
+        Response responseObj = invoke(path, requestObj);
         return GSONCodec.encode(responseObj);
     }
 

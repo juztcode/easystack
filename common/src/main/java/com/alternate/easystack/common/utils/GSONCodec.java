@@ -49,4 +49,13 @@ public class GSONCodec {
         JsonElement jsonElement = THR_GSON.get().toJsonTree(data);
         return (T) THR_GSON.get().fromJson(jsonElement, type);
     }
+
+    public static <T> T clone(T object) {
+        if (object == null) {
+            return null;
+        }
+
+        Class clazz = object.getClass();
+        return decode(clazz, encode(object));
+    }
 }
