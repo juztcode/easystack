@@ -12,7 +12,7 @@ public class App {
         DbService dbService = new DynamoDbService("test");
         HandlerManager handlerManager = new HandlerManager(dbService);
 
-        handlerManager.add("/test", new TestHandler());
+        handlerManager.register("/test", TestHandler.class);
 
         TestRequest testRequest = new TestRequest("test");
         TestResponse testResponse = handlerManager.invoke("/test", testRequest);

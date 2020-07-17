@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.alternate.easystack.exception.UnhandledExceptionHandler.unhandled;
+
 public class HandlerManager {
     private final DbService dbService;
     private final Map<String, Handler> handlersMap = new HashMap<>();
@@ -14,16 +16,13 @@ public class HandlerManager {
         this.dbService = dbService;
     }
 
-    public void add(String path, Handler handler) {
-        handlersMap.put(path, handler);
+    public void register(String path, Class<? extends Handler> handler) {
+        Handler instance = unhandled(handler::newInstance);
+        handlersMap.put(path, instance);
     }
 
-    public void remove(String path) {
+    public void unregister(String path) {
         handlersMap.remove(path);
-    }
-
-    public Handler get(String path) {
-        return handlersMap.get(path);
     }
 
     @SuppressWarnings("unchecked")
