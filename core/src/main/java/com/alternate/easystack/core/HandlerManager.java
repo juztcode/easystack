@@ -31,15 +31,15 @@ public class HandlerManager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Response> T invoke(String path, Request request) {
+    public Response invoke(String path, Request request) {
         ContextEx contextEx = new ContextEx(dbService);
 
         try {
-            T response = (T) handlersMap.get(path).getHandler().apply(contextEx, request);
+            Response response = (Response) handlersMap.get(path).getHandler().apply(contextEx, request);
             contextEx.commitTx();
             return response;
         } catch (Throwable e) {
-            throw new HandlerException(e);
+            return new ErrorResponse(e.getMessage(), e);
         }
     }
 
