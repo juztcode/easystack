@@ -27,6 +27,7 @@ public abstract class Context {
             txItem = dbService.get(key);
 
             if (txItem != null) {
+                System.out.println("Add to context cache: " + txItem);
                 cache.put(key, txItem);
             }
         }
@@ -37,6 +38,8 @@ public abstract class Context {
 
     public void save(String key, Object item) {
         TxItem txItem = new TxItem(key, GSONCodec.clone(item), getVersion(key) + 1);
+
+        System.out.println("Add to context transaction: " + txItem);
         transaction.addToTx(txItem);
     }
 

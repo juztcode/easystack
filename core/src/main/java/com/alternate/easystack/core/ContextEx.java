@@ -6,6 +6,7 @@ public class ContextEx extends Context {
     }
 
     public void commitTx() {
+        System.out.println("Commit context transaction: " + transaction);
         dbService.save(transaction);
     }
 }

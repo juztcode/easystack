@@ -19,4 +19,11 @@ public class Transaction {
     public Collection<TxItem> getTxItems() {
         return txItems.values();
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "txItems=" + txItems +
+                '}';
+    }
 }
