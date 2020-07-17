@@ -3,20 +3,27 @@ package com.alternate.easystack.example;
 import com.alternate.easystack.core.Request;
 
 public class TestRequest implements Request {
-    private final String key;
+    private final String id;
+    private final String name;
 
-    public TestRequest(String key) {
-        this.key = key;
+    public TestRequest(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
         return "TestRequest{" +
-                "key='" + key + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

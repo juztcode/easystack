@@ -16,7 +16,8 @@ public abstract class Context {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Optional<T> get(String key) {
+    public <T> Optional<T> get(Class<?> type, String id) {
+        String key = String.join(":", type.getName(), id);
         TxItem txItem = transaction.get(key);
 
         if (txItem == null) {
@@ -36,7 +37,8 @@ public abstract class Context {
         return Optional.ofNullable(GSONCodec.clone(t));
     }
 
-    public void save(String key, Object item) {
+    public void save(String id, Object item) {
+        String key = String.join(":", item.getClass().getName(), id);
         TxItem txItem = new TxItem(key, GSONCodec.clone(item), getVersion(key) + 1);
 
         System.out.println("Add to context transaction: " + txItem);
