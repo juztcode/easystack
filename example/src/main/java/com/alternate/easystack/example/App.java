@@ -3,6 +3,8 @@ package com.alternate.easystack.example;
 import com.alternate.easystack.core.DbService;
 import com.alternate.easystack.core.DynamoDbService;
 import com.alternate.easystack.core.HandlerManager;
+import com.alternate.easystack.core.RapidoidWebApi;
+import com.alternate.easystack.core.WebApi;
 
 public class App {
 
@@ -14,9 +16,7 @@ public class App {
 
         handlerManager.register("/test", TestHandler.class);
 
-        TestRequest testRequest = new TestRequest("test");
-        TestResponse testResponse = handlerManager.invoke("/test", testRequest);
-
-        System.out.println("Response: " + testResponse);
+        WebApi webApi = new RapidoidWebApi();
+        webApi.start(handlerManager);
     }
 }
