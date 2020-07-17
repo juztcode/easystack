@@ -6,10 +6,18 @@ import java.nio.charset.StandardCharsets;
 
 public class RapidoidWebApi implements WebApi {
 
+    private final String address;
+    private final int port;
+
+    public RapidoidWebApi(String address, int port) {
+        this.address = address;
+        this.port = port;
+    }
+
     @Override
     public void start(HandlerManager handlerManager) {
-        On.address("0.0.0.0");
-        On.port(8080);
+        On.address(address);
+        On.port(port);
 
         handlerManager.getRegisteredPaths().forEach(path -> {
             On.post(path).plain(req -> handlerManager.invokeJson(path, toJson(req.body())));

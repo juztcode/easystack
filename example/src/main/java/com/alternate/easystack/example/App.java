@@ -16,7 +16,7 @@ public class App {
 
         handlerManager.register("/test", TestHandler.class);
 
-        WebApi webApi = new RapidoidWebApi();
+        WebApi webApi = new RapidoidWebApi("0.0.0.0", 8080);
         webApi.start(handlerManager);
     }
 }
