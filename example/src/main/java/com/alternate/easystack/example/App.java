@@ -9,9 +9,9 @@ import com.alternate.easystack.core.WebApi;
 public class App {
 
     public static void main(String[] args) {
-        DynamoDbService.createTable("test");
+        DynamoDbService.createTable("easystack_example");
 
-        DbService dbService = new DynamoDbService("test");
+        DbService dbService = new DynamoDbService("easystack_example");
         HandlerManager handlerManager = new HandlerManager(dbService);
 
         handlerManager.register("/create-user", CreateUser.class);

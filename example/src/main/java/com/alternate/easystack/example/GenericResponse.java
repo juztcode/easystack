@@ -4,26 +4,26 @@ import com.alternate.easystack.core.Response;
 
 public class GenericResponse implements Response {
     private final boolean status;
-    private final String message;
+    private final Object data;
 
-    public GenericResponse(boolean status, String message) {
+    public GenericResponse(boolean status, Object data) {
         this.status = status;
-        this.message = message;
+        this.data = data;
     }
 
     public boolean isStatus() {
         return status;
     }
 
-    public String getMessage() {
-        return message;
+    public Object getData() {
+        return data;
     }
 
     @Override
     public String toString() {
         return "GenericResponse{" +
                 "status=" + status +
-                ", message='" + message + '\'' +
+                ", data=" + data +
                 '}';
     }
 }

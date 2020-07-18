@@ -51,16 +51,20 @@ public class DynamoDbService implements DbService {
         Item item = table.getItem(getItemSpec);
 
         if (item != null) {
-            long version = Long.parseLong(item.getString("version"));
-            String type = item.getString("type");
-            String data = item.getString("data");
-
-            Object payload = GSONCodec.decode(type, data);
-            return new TxItem(key, payload, version);
+            return toTxItem(item);
         } else {
             return null;
         }
     }
+
+//    @Override
+//    public Stream<TxItem> getAll(String type) {
+//        QuerySpec querySpec = createQuerySpec(type);
+//        Index typeIndex = table.getIndex("typeIndex");
+//        ItemCollection<QueryOutcome> query = typeIndex.query(querySpec);
+//        Spliterator<Item> spliterator = Spliterators.spliteratorUnknownSize(query.iterator(), Spliterator.ORDERED);
+//        return StreamSupport.stream(spliterator, false).map(DynamoDbService::toTxItem);
+//    }
 
     @Override
     public void save(Collection<TxItem> txItems) {
@@ -81,11 +85,24 @@ public class DynamoDbService implements DbService {
         List<KeySchemaElement> ks = new ArrayList<>();
         ks.add(new KeySchemaElement("key", KeyType.HASH));
 
+//        ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<>();
+//        indexKeySchema.add(new KeySchemaElement().withAttributeName("type").withKeyType(KeyType.HASH));  //Partition key
+//        indexKeySchema.add(new KeySchemaElement().withAttributeName("key").withKeyType(KeyType.RANGE));  //Sort key
+//
+//        Projection projection = new Projection().withProjectionType(ProjectionType.INCLUDE);
+//
+//        LocalSecondaryIndex localSecondaryIndex = new LocalSecondaryIndex()
+//                .withIndexName("typeIndex").withKeySchema(indexKeySchema).withProjection(projection);
+//
+//        ArrayList<LocalSecondaryIndex> localSecondaryIndexes = new ArrayList<>();
+//        localSecondaryIndexes.add(localSecondaryIndex);
+
         CreateTableRequest request = new CreateTableRequest()
                 .withBillingMode(BillingMode.PAY_PER_REQUEST)
                 .withTableName(tableName)
                 .withAttributeDefinitions(attributeDefinitions)
                 .withKeySchema(ks);
+//                .withLocalSecondaryIndexes(localSecondaryIndexes);
 
         AmazonDynamoDB db = createDb();
 
@@ -94,6 +111,16 @@ public class DynamoDbService implements DbService {
         } catch (ResourceInUseException e) {
             logger.warn("table already available");
         }
+    }
+
+    private static TxItem toTxItem(Item item) {
+        String key = item.getString("key");
+        long version = Long.parseLong(item.getString("version"));
+        String type = item.getString("type");
+        String data = item.getString("data");
+
+        Object payload = GSONCodec.decode(type, data);
+        return new TxItem(key, payload, version);
     }
 
     private static AmazonDynamoDB createDb() {
@@ -125,6 +152,14 @@ public class DynamoDbService implements DbService {
 
         return putItemSpec;
     }
+
+//    private static QuerySpec createQuerySpec(String type) {
+//        return new QuerySpec()
+//                .withKeyConditionExpression("type = :type")
+//                .withValueMap(new ValueMap()
+//                        .withString(":type", type)
+//                );
+//    }
 
     private static TransactWriteItemsRequest createTxWriteItemRequest(String tableName, Collection<TxItem> txItems) {
         List<TransactWriteItem> requestItems = new LinkedList<>();
