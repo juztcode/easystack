@@ -14,7 +14,6 @@ import static com.alternate.easystack.common.exception.UnhandledExceptionHandler
 public class HandlerManager {
     private final DbService dbService;
     private final Map<String, HandlerWrapper> handlersMap = new HashMap<>();
-    private final Map<Class, Logger> loggerMap = new HashMap<>();
 
     public HandlerManager(DbService dbService) {
         this.dbService = dbService;
@@ -26,7 +25,8 @@ public class HandlerManager {
         Class<? extends Response> response = (Class<? extends Response>) ((ParameterizedType) handler.getGenericInterfaces()[0]).getActualTypeArguments()[1];
 
         Handler instance = unhandled(handler::newInstance);
-        handlersMap.put(path, new HandlerWrapper(request, response, instance));
+        Logger logger = LoggerFactory.getLogger(handler);
+        handlersMap.put(path, new HandlerWrapper(request, response, handler, instance, logger));
     }
 
     public void unregister(String path) {
@@ -36,9 +36,7 @@ public class HandlerManager {
     @SuppressWarnings("unchecked")
     public <T extends Response> T invoke(String path, Request request) {
         HandlerWrapper wrapper = handlersMap.get(path);
-
-        Logger logger = loggerMap.computeIfAbsent(wrapper.getHandler().getClass(), LoggerFactory::getLogger);
-        ContextEx contextEx = new ContextEx(dbService, logger);
+        ContextEx contextEx = new ContextEx(dbService, wrapper.getLogger());
 
         try {
             T response = (T) wrapper.getHandler().apply(contextEx, request);
