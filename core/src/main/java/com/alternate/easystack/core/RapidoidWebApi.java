@@ -3,6 +3,7 @@ package com.alternate.easystack.core;
 import org.rapidoid.http.fast.On;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class RapidoidWebApi implements WebApi {
 
@@ -15,13 +16,23 @@ public class RapidoidWebApi implements WebApi {
     }
 
     @Override
-    public void start(HandlerManager handlerManager) {
+    public void start(Application application) {
         On.address(address);
         On.port(port);
 
-        handlerManager.getRegisteredPaths().forEach(path -> {
-            On.post(path).plain(req -> handlerManager.invokeJson(path, toJson(req.body())));
-        });
+        for (Map.Entry<String, Service> serviceEntry : application.getServiceMap().entrySet()) {
+            String serviceName = serviceEntry.getKey();
+
+            for (Map.Entry<String, HandlerWrapper> handlerEntry : serviceEntry.getValue().getHandlersMap().entrySet()) {
+                String handlerName = handlerEntry.getKey();
+
+                On.post(toPath(serviceName, handlerName)).plain(req -> handlerEntry.getValue().invokeJson(toJson(req.body())));
+            }
+        }
+    }
+
+    private static String toPath(String serviceName, String handlerName) {
+        return "/" + serviceName + "/" + handlerName;
     }
 
     private static String toJson(byte[] body) {

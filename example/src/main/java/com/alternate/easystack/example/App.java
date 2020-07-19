@@ -1,10 +1,11 @@
 package com.alternate.easystack.example;
 
+import com.alternate.easystack.core.Application;
 import com.alternate.easystack.core.DbService;
 import com.alternate.easystack.core.DynamoDbService;
-import com.alternate.easystack.core.HandlerManager;
 import com.alternate.easystack.core.RapidoidWebApi;
 import com.alternate.easystack.core.WebApi;
+import com.alternate.easystack.example.services.UserService;
 
 public class App {
 
@@ -12,11 +13,11 @@ public class App {
         DynamoDbService.createTable("easystack_example");
 
         DbService dbService = new DynamoDbService("easystack_example");
-        HandlerManager handlerManager = new HandlerManager(dbService);
 
-        handlerManager.register("/create-user", CreateUser.class);
+        Application application = new Application(dbService);
+        application.registerService(UserService.class);
 
         WebApi webApi = new RapidoidWebApi("0.0.0.0", 8080);
-        webApi.start(handlerManager);
+        webApi.start(application);
     }
 }

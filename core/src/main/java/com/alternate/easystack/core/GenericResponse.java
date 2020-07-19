@@ -1,4 +1,4 @@
-package com.alternate.easystack.example;
+package com.alternate.easystack.core;
 
 import com.alternate.easystack.core.Response;
 
