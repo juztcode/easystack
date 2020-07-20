@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 
 import static com.alternate.easystack.common.exception.UnhandledExceptionHandler.unhandled;
 
@@ -64,6 +65,12 @@ public class HandlerWrapper {
         } catch (Throwable e) {
             throw (e instanceof HandlerException) ? (HandlerException) e : new HandlerException(e);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Response> T invoke(Map<String, Object> request) {
+        Request requestObj = GSONCodec.decode(requestType, request);
+        return invoke(requestObj);
     }
 
     public String invokeJson(String request) {

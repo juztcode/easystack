@@ -23,4 +23,14 @@ public class Application {
     public Map<String, Service> getServiceMap() {
         return serviceMap;
     }
+
+    public Service getService(String service) {
+        Service instance = serviceMap.get(service);
+
+        if (instance == null) {
+            throw new RuntimeException("No service found for: " + service);
+        }
+
+        return instance;
+    }
 }

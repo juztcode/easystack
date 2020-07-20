@@ -21,6 +21,7 @@
         <gson.version>2.8.6</gson.version>
         <rapidoid.version>5.0.7</rapidoid.version>
         <slf4j.version>1.7.30</slf4j.version>
+        <aws-lambda.version>1.2.1</aws-lambda.version>
     </properties>
 
     <dependencies>
@@ -57,6 +58,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-core -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>${aws-lambda.version}</version>
         </dependency>
     </dependencies>
 

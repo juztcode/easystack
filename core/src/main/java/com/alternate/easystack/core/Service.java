@@ -22,4 +22,14 @@ public abstract class Service {
     public Map<String, HandlerWrapper> getHandlersMap() {
         return handlersMap;
     }
+
+    public HandlerWrapper getHandler(String handler) {
+        HandlerWrapper wrapper = handlersMap.get(handler);
+
+        if (wrapper == null) {
+            throw new RuntimeException("No handler found for: " + handler);
+        }
+
+        return wrapper;
+    }
 }
