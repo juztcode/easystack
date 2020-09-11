@@ -3,7 +3,6 @@ package com.alternate.easystack.example.handlers;
 import com.alternate.easystack.core.Context;
 import com.alternate.easystack.core.GenericResponse;
 import com.alternate.easystack.core.Handler;
-import com.alternate.easystack.example.error.UserServiceError;
 import com.alternate.easystack.example.models.User;
 import com.alternate.easystack.example.requests.RegisterUserRequest;
 
@@ -20,10 +19,7 @@ public class RegisterUser implements Handler<RegisterUserRequest, GenericRespons
             return GenericResponse.ok("user registered successfully");
         } else {
             context.logger().error("user already exist for: " + request.getUsername());
-            return GenericResponse.error(
-                    UserServiceError.DUPLICATE_USER.getErrorCode(),
-                    new RuntimeException(UserServiceError.DUPLICATE_USER.getMessage(request.getUsername()))
-            );
+            return GenericResponse.error("user already exist for: " + request.getUsername());
         }
     }
 }

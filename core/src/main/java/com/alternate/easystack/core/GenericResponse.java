@@ -2,13 +2,11 @@ package com.alternate.easystack.core;
 
 public class GenericResponse implements Response {
     private final boolean status;
-    private final int code;
     private final String message;
     private final Object data;
 
-    public GenericResponse(boolean status, int code, String message, Object data) {
+    public GenericResponse(boolean status, String message, Object data) {
         this.status = status;
-        this.code = code;
         this.message = message;
         this.data = data;
     }
@@ -17,15 +15,10 @@ public class GenericResponse implements Response {
         return status;
     }
 
-    public int getCode() {
-        return code;
-    }
-
     @Override
     public String toString() {
         return "GenericResponse{" +
                 "status=" + status +
-                ", code=" + code +
                 ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';
@@ -40,18 +33,22 @@ public class GenericResponse implements Response {
     }
 
     public static GenericResponse ok() {
-        return new GenericResponse(true, 0, null, null);
+        return new GenericResponse(true, null, null);
     }
 
     public static GenericResponse ok(String message) {
-        return new GenericResponse(true, 0, message, null);
+        return new GenericResponse(true, message, null);
     }
 
     public static GenericResponse ok(Object data) {
-        return new GenericResponse(true, 0, null, data);
+        return new GenericResponse(true, null, data);
     }
 
-    public static GenericResponse error(int code, Throwable error) {
-        return new GenericResponse(false, code, error.getMessage(), null);
+    public static GenericResponse error(String message) {
+        return new GenericResponse(false, message, null);
+    }
+
+    public static GenericResponse error(Throwable error) {
+        return new GenericResponse(false, error.getMessage(), null);
     }
 }
