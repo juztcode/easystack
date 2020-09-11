@@ -16,6 +16,10 @@
     </modules>
 
     <properties>
+        <cloudImpl.errorCode.enable>true</cloudImpl.errorCode.enable>
+        <cloudImpl.errorCode.package>com.alternate.easystack.core.error</cloudImpl.errorCode.package>
+        <cloudImpl.errorCode.errorFileName>Core</cloudImpl.errorCode.errorFileName>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <aws-sdk.version>1.11.820</aws-sdk.version>
         <gson.version>2.8.6</gson.version>
@@ -32,9 +36,9 @@
             <version>${aws-sdk.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <!-- https://mvnrepository.com/artifact/com.google.errorCode.gson/gson -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
+            <groupId>com.google.errorCode.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
@@ -66,6 +70,14 @@
             <artifactId>aws-lambda-java-core</artifactId>
             <version>${aws-lambda.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.cloudimpl/errorcode4j -->
+        <dependency>
+            <groupId>com.cloudimpl</groupId>
+            <artifactId>errorcode4j</artifactId>
+            <version>2.0.0.22</version>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -78,6 +90,21 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.cloudimpl</groupId>
+                <artifactId>errorcode-generator</artifactId>
+                <version>2.0.0.22</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>easystack</id>
+                        <goals>
+                            <goal>ErrorCodeGenerator</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
