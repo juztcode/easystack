@@ -87,7 +87,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/juztcode/releases</url>
+            <url>https://maven.pkg.github.com/juztcode/easystack</url>
         </repository>
     </distributionManagement>
 </project>
