@@ -80,21 +80,6 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.cloudimpl</groupId>
-                <artifactId>errorcode-generator</artifactId>
-                <version>2.0.0.22</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <id>easystack</id>
-                        <goals>
-                            <goal>ErrorCodeGenerator</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -102,7 +87,7 @@
         <repository>
             <id>github</id>
             <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/octocat/hello-world</url>
+            <url>https://maven.pkg.github.com/juztcode/releases</url>
         </repository>
     </distributionManagement>
 </project>
