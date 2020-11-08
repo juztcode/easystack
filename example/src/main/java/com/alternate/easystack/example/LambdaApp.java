@@ -2,7 +2,7 @@ package com.alternate.easystack.example;
 
 import com.alternate.easystack.core.Application;
 import com.alternate.easystack.core.DbService;
-import com.alternate.easystack.core.DynamoDbService;
+import com.alternate.easystack.core.impl.DynamoDbService;
 import com.alternate.easystack.core.LambdaEndpoint;
 import com.alternate.easystack.example.services.UserService;
 

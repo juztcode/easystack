@@ -1,0 +1,51 @@
+name: Release and publish
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  release_and_publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Extract release version
+      run: |
+        export VERSION=$(cmd < pom.xml | grep "<version>" | head -n 1 |  awk -F'>' '{print $2}' | awk -F'<' '{print $1}')
+        export RELEASE_VERSION=${VERSION}.${GITHUB_RUN_NUMBER}
+        echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
+
+    - name: Set release version
+      if: success()
+      run: mvn -B versions:set versions:commit -DnewVersion="${RELEASE_VERSION}"
+
+    - name: Publish package
+      if: success()
+      run: mvn -B deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      if: success()
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.RELEASE_VERSION }}
+        release_name: Release ${{ env.RELEASE_VERSION }} [${{ github.ref }}]
+        body: |
+          Automated release
+        draft: false
+        prerelease: false

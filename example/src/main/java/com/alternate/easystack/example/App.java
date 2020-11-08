@@ -2,7 +2,7 @@ package com.alternate.easystack.example;
 
 import com.alternate.easystack.core.Application;
 import com.alternate.easystack.core.DbService;
-import com.alternate.easystack.core.DynamoDbService;
+import com.alternate.easystack.core.impl.DynamoDbService;
 import com.alternate.easystack.core.RapidoidWebApi;
 import com.alternate.easystack.core.WebApi;
 import com.alternate.easystack.example.services.UserService;
