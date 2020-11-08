@@ -14,8 +14,8 @@ public class App {
 
         DbService dbService = new DynamoDbService("easystack_example");
 
-        Application application = new Application(dbService);
-        application.registerService(UserService.class);
+        Application application = new Application(dbService)
+                .registerService(UserService.class);
 
         WebApi webApi = new RapidoidWebApi("0.0.0.0", 8080);
         webApi.start(application);

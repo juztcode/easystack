@@ -8,20 +8,11 @@ import com.alternate.easystack.example.services.UserService;
 
 public class LambdaApp extends LambdaEndpoint {
 
-    private static final Application application;
-
-    static {
-        DynamoDbService.createTable("easystack_example");
-
-        DbService dbService = new DynamoDbService("easystack_example");
-
-        application = new Application(dbService);
-        application.registerService(UserService.class);
-
-    }
-
     @Override
     public Application getApplication() {
-        return application;
+        DbService dbService = new DynamoDbService("easystack_example");
+
+        return new Application(dbService)
+                .registerService(UserService.class);
     }
 }

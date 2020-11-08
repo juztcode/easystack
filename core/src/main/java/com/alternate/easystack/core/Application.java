@@ -14,10 +14,11 @@ public class Application {
         this.dbService = dbService;
     }
 
-    public void registerService(Class<? extends Service> service) {
+    public Application registerService(Class<? extends Service> service) {
         Constructor<? extends Service> constructor = unhandled(() -> service.getConstructor(DbService.class));
         Service instance = unhandled(() -> constructor.newInstance(dbService));
         serviceMap.put(service.getSimpleName(), instance);
+        return this;
     }
 
     public Map<String, Service> getServiceMap() {
