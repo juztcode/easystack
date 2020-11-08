@@ -28,7 +28,9 @@ jobs:
 
     - name: Set release version
       if: success()
-      run: mvn -B versions:set versions:commit -DnewVersion="${RELEASE_VERSION}"
+      run: |
+        echo "set version: ${RELEASE_VERSION}"
+        mvn versions:set versions:commit -DnewVersion="${RELEASE_VERSION}"
 
     - name: Publish package
       if: success()
